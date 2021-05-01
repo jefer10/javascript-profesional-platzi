@@ -1,7 +1,8 @@
 class AutoPause{
     constructor(){
-        this.threshold=0.25;
+        this.threshold=0.25; //umbral 
         this.hadleIntersection=this.hadleIntersection.bind(this);
+        this.hadleVisibilityChange=this.hadleVisibilityChange.bind(this);
     }
 
     run(MediaPlayer){
@@ -10,6 +11,8 @@ class AutoPause{
             threshold: this.threshold
         })
         observer.observe(this.MediaPlayer.media);
+
+        document.addEventListener("visibilitychange", this.hadleVisibilityChange);
     }
 
     hadleIntersection(entries){
@@ -24,6 +27,17 @@ class AutoPause{
         
         console.log(entry);
     }
+
+    hadleVisibilityChange(){
+        const isVisible=document.visibilityState === "visible";
+        if( isVisible){
+            this.MediaPlayer.play();
+        }else{
+            this.MediaPlayer.pause();
+        }
+    }
+
+
 }
 
 export default AutoPause;
